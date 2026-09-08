@@ -8,7 +8,7 @@ export const personalInfo = {
   bio: "I design and build digital products that make complex ideas feel simple. My work sits at the intersection of thoughtful interfaces, robust engineering, and a little bit of curiosity.",
   education: "SMK Negri 1 Pasuruan",
   focus: "AI-driven solutions",
-  resumeUrl: "/resume.pdf",
+  Download_CV: "/images/projects/CV.pdf",
 };
 
 // Statistik singkat yang ditampilkan pada bagian ringkasan portfolio.
@@ -31,7 +31,7 @@ export const experience = [
 
 // Daftar project yang ditampilkan pada halaman utama dan halaman detail.
 export const projects = [
-  { slug: "NewsAzz", number: "01", title: "NewsAzz", category: "Trusted News Platform", description: "A platform for viewing the latest, trusted news, tracking momentum, and making progress clearly visible.", image: "/images/projects/web_berita.png", technologies: ["HTML", "CSS"], githubUrl: "https://github.com/", liveUrl: "https://example.com", featured: true, color: "lime" },
+  { slug: "NewsAzz", number: "01", title: "NewsAzz", category: "Trusted News Platform", description: "A platform for viewing the latest, trusted news, tracking momentum, and making progress clearly visible.", image: "/images/projects/web_berita.png", technologies: ["HTML", "CSS"], liveUrl: "https://example.com", featured: true, color: "lime" },
   { slug: "lifechoice", number: "02", title: "LifeChoice", category: "Life management", description: "A simple dashboard for turning daily intentions into decisions you can actually act on.", image: "/images/projects/LifeChoice.png", technologies: ["React", "Node.js", "MySQL"], githubUrl: "https://github.com/", liveUrl: "https://example.com", featured: false, color: "peach" },
   { slug: "Management Ekskul", number: "03", title: "Management Ekskul", category: "Student Activity Management", description: "A platform for managing student activities and events within the school.", image: "/images/projects/management-ekskul.png", technologies: ["Next.js", "ShadCN UI", "CSS", "Supabase"], githubUrl: "https://github.com/", liveUrl: "https://example.com", featured: false, color: "blue" },
 ];
@@ -51,4 +51,4 @@ export const certificates = [
 export const education = [{ year: "2024 — Now", school: "SMK Negri 1 Pasuruan", major: "Software Engineering", description: "A hands-on education in web development, databases, product thinking, and collaborative delivery." }];
 
 // Tautan menuju profil sosial dan profesional.
-export const socialLinks = [{ label: "GitHub", href: "https://github.com/" }, { label: "LinkedIn", href: "https://www.linkedin.com/" }, { label: "Instagram", href: "https://www.instagram.com/" }];
+export const socialLinks = [{ label: "GitHub", href: "https://github.com/d99881100-design" }, { label: "Discord", href: "https://discord.com/users/1458672696517722242" }, { label: "Instagram", href: "https://www.instagram.com/akhmad_roufun_aziz?stkn=MWkxYXJ4NDZmOXo5aw==" }];
