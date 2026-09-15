@@ -37,6 +37,9 @@ export default async function ProjectDetail({
           fill
           priority
           sizes="100vw"
+          quality={75}
+          loading="lazy"
+          decoding="async"
         />
       </div>
       <div className="detail-copy">

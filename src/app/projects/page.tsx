@@ -111,6 +111,9 @@ export default async function ProjectsPage({
                   alt={`${project.title} project preview`}
                   fill
                   sizes="(max-width: 700px) 100vw, 50vw"
+                  quality={75}
+                  loading="lazy"
+                  decoding="async"
                 />
                 <span className="project-number">{project.number}</span>
                 <span className="project-image-label">
