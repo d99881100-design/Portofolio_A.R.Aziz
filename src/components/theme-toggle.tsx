@@ -6,9 +6,13 @@ import { useEffect, useState } from "react";
 
 // Tombol untuk mengaktifkan atau menonaktifkan class tema gelap pada dokumen.
 export function ThemeToggle() {
+  // Menyimpan status tema aktif agar tombol dapat menyesuaikan tampilan.
   const [dark, setDark] = useState(false);
   // Menyamakan state React dengan class tema yang sudah dipasang pada elemen html.
-  useEffect(() => setDark(document.documentElement.classList.contains("dark")), []);
+  useEffect(
+    () => setDark(document.documentElement.classList.contains("dark")),
+    [],
+  );
   // Mengganti class tema, menyimpan pilihan pengguna, dan memperbarui ikon tombol.
   function toggleTheme() {
     const next = !dark;
@@ -17,5 +21,14 @@ export function ThemeToggle() {
     setDark(next);
   }
   // Ikon dan label tombol mengikuti tema yang sedang aktif.
-  return <button className="icon-button" onClick={toggleTheme} aria-label={dark ? "Use light theme" : "Use dark theme"} title={dark ? "Use light theme" : "Use dark theme"}>{dark ? <Sun size={17} /> : <Moon size={17} />}</button>;
+  return (
+    <button
+      className="icon-button"
+      onClick={toggleTheme}
+      aria-label={dark ? "Use light theme" : "Use dark theme"}
+      title={dark ? "Use light theme" : "Use dark theme"}
+    >
+      {dark ? <Sun size={17} /> : <Moon size={17} />}
+    </button>
+  );
 }
