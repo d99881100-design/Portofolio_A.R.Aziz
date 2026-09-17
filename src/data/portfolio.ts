@@ -88,7 +88,7 @@ export const projects = [
     color: "peach",
   },
   {
-    slug: "Management Ekskul",
+    slug: "management-ekskul",
     number: "03",
     title: "Management Ekskul",
     category: "Student Activity Management",

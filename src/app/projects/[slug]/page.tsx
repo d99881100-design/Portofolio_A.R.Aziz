@@ -6,9 +6,12 @@ import { notFound } from "next/navigation";
 // Data project menjadi sumber parameter route dan isi case study.
 import { projects } from "@/data/portfolio";
 
+const normalizeProjectSlug = (value: string) =>
+  value.trim().toLowerCase().replace(/\s+/g, "-");
+
 // Menghasilkan semua slug project agar halaman detail dapat dibuat secara statis.
 export function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }));
+  return projects.map((project) => ({ slug: normalizeProjectSlug(project.slug) }));
 }
 
 // Mengambil project berdasarkan slug lalu menampilkan halaman detailnya.
@@ -16,7 +19,9 @@ export default async function ProjectDetail({
   params,
 }: PageProps<"/projects/[slug]">) {
   const { slug } = await params;
-  const project = projects.find((item) => item.slug === slug);
+  const project = projects.find(
+    (item) => normalizeProjectSlug(item.slug) === normalizeProjectSlug(slug),
+  );
 
   if (!project) {
     notFound();
@@ -38,7 +43,6 @@ export default async function ProjectDetail({
           priority
           sizes="100vw"
           quality={75}
-          loading="lazy"
           decoding="async"
         />
       </div>
