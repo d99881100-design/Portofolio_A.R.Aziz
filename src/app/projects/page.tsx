@@ -4,9 +4,9 @@ import {
   filterProjects,
   normalizeProjectCategory,
   normalizeProjectSearch,
-  projects,
   validProjectCategories,
 } from "@/data/portfolio";
+import { getProjects } from "@/lib/projects";
 
 export default async function ProjectsPage({
   searchParams,
@@ -22,6 +22,7 @@ export default async function ProjectsPage({
     ? selectedCategory
     : "all";
 
+  const projects = await getProjects();
   const filteredProjects = filterProjects(projects, {
     category: activeCategory,
     q: selectedQuery,

@@ -103,6 +103,20 @@ export const projects = [
   },
 ];
 
+export type PortfolioProjectLike = {
+  slug: string;
+  number: string;
+  title: string;
+  category: string;
+  description: string;
+  image: string;
+  technologies: string[];
+  githubUrl?: string;
+  liveUrl?: string;
+  featured: boolean;
+  color: string;
+};
+
 export const validProjectCategories = ["all", "web", "mobile"] as const;
 
 export function normalizeProjectCategory(value?: string) {
@@ -113,7 +127,7 @@ export function normalizeProjectSearch(value?: string) {
   return value?.trim().toLowerCase() ?? "";
 }
 
-export function matchesProjectCategory(project: (typeof projects)[number], selected: string) {
+export function matchesProjectCategory(project: PortfolioProjectLike, selected: string) {
   const haystack = [
     project.category,
     project.title,
@@ -147,7 +161,7 @@ export function matchesProjectCategory(project: (typeof projects)[number], selec
 }
 
 export function filterProjects(
-  list = projects,
+  list: PortfolioProjectLike[] = projects,
   { category, q }: { category?: string; q?: string } = {},
 ) {
   const selectedCategory = normalizeProjectCategory(category);

@@ -20,6 +20,85 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Portfolio + Supabase overview
+
+This project is built with Next.js, TypeScript, Tailwind CSS, and Supabase.
+
+The app flow is:
+
+Next.js → Supabase → PostgreSQL
+
+### Supabase tables
+
+- `public.projects`
+  - `id` : bigint / serial
+  - `slug` : text
+  - `number` : text
+  - `title` : text
+  - `category` : text
+  - `description` : text
+  - `image` : text
+  - `technologies` : text[]
+  - `github_url` : text
+  - `live_url` : text
+  - `featured` : boolean
+  - `color` : text
+  - `created_at` : timestamptz
+
+- `public.experience`
+  - `id` : bigint / serial
+  - `year` : text
+  - `role` : text
+  - `company` : text
+  - `description` : text
+  - `tools` : text[]
+
+- `public.achievements`
+  - `id` : bigint / serial
+  - `title` : text
+  - `year` : text
+  - `level` : text
+  - `description` : text
+
+- `public.certificates`
+  - `id` : bigint / serial
+  - `title` : text
+  - `issuer` : text
+  - `year` : text
+  - `image` : text
+  - `link` : text
+
+- `public.education`
+  - `id` : bigint / serial
+  - `year` : text
+  - `school` : text
+  - `major` : text
+  - `description` : text
+
+- `public.contact_messages`
+  - `id` : bigint / serial
+  - `name` : text
+  - `email` : text
+  - `message` : text
+  - `created_at` : timestamptz
+
+### Data sources
+
+- Project data is now served from Supabase.
+- Experience data is now served from Supabase.
+- Achievement data is now served from Supabase.
+- Certificate data is now served from Supabase.
+- Education data is now served from Supabase.
+- Contact form submissions are handled through the route `/api/contact` and inserted into `public.contact_messages`.
+
+### Security notes
+
+- RLS remains active.
+- Public read access is used for portfolio data that is intentionally public.
+- `public.contact_messages` accepts public insert only for contact submissions.
+- No service role or secret key is used in frontend code.
+- Environment variables are kept in `.env.local` and are not committed to the repository.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

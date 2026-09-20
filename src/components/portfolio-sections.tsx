@@ -28,8 +28,13 @@ import {
   stats,
   validProjectCategories,
 } from "@/data/portfolio";
+import type { AchievementItem } from "@/lib/achievements";
+import type { CertificateItem } from "@/lib/certificates";
+import type { EducationItem } from "@/lib/education";
+import type { ExperienceItem } from "@/lib/experience";
 // Hook dan tipe event untuk state interaksi client-side.
 import { FormEvent, useEffect, useState } from "react";
+import type { Project } from "@/lib/projects";
 
 // Path gambar profil yang digunakan pada bagian hero.
 const heroImageUrl = "/images/profil_keren.jpeg";
@@ -229,16 +234,18 @@ export function Skills() {
   );
 }
 // Menampilkan pengalaman dalam bentuk timeline beserta teknologi tiap peran.
-export function Experience() {
+export function Experience({ initialExperience = experience }: { initialExperience?: ExperienceItem[] }) {
   const reducedMotion = useReducedMotion();
+  const items = initialExperience.length > 0 ? initialExperience : experience;
+
   return (
     <section className="section wrap experience-section">
       <SectionLabel number="03" label="The path so far" title="Experience" />
       <div className="timeline">
-        {experience.map((item, index) => (
+        {items.map((item, index) => (
           <motion.article
             className="timeline-item"
-            key={item.year}
+            key={`${item.year}-${item.role}`}
             {...revealProps(Boolean(reducedMotion), index * 0.1)}
           >
             <div className="timeline-date">{item.year}</div>
@@ -259,12 +266,13 @@ export function Experience() {
   );
 }
 // Menampilkan daftar project utama dengan kartu yang muncul saat pengguna men-scroll ke area tersebut.
-export function Projects() {
+export function Projects({ initialProjects = projects }: { initialProjects?: Project[] }) {
   const reducedMotion = useReducedMotion();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
 
-  const filteredProjects = filterProjects(projects, {
+  const activeProjects = initialProjects.length > 0 ? initialProjects : projects;
+  const filteredProjects = filterProjects(activeProjects, {
     q: search,
     category,
   });
@@ -393,8 +401,10 @@ export function Projects() {
   );
 }
 // Menampilkan pencapaian penting sebagai bukti perkembangan selama proses belajar dan berlatih.
-export function Achievements() {
+export function Achievements({ initialAchievements = achievements }: { initialAchievements?: AchievementItem[] }) {
   const reducedMotion = useReducedMotion();
+  const items = initialAchievements.length > 0 ? initialAchievements : achievements;
+
   return (
     <section className="section dark-section">
       <div className="wrap">
@@ -405,7 +415,7 @@ export function Achievements() {
           light
         />
         <div className="achievement-list">
-          {achievements.map((item, index) => (
+          {items.map((item, index) => (
             <motion.div
               className="achievement"
               key={item.title}
@@ -425,10 +435,12 @@ export function Achievements() {
   );
 }
 // Menampilkan sertifikat dan membuka preview besar ketika pengguna memilih salah satu gambar.
-export function Certificates() {
+export function Certificates({ initialCertificates = certificates }: { initialCertificates?: CertificateItem[] }) {
   // Menyimpan sertifikat yang sedang dibuka agar modal dapat menampilkan gambar yang benar.
   const [selected, setSelected] = useState<string | null>(null);
   const reducedMotion = useReducedMotion();
+  const items = initialCertificates.length > 0 ? initialCertificates : certificates;
+
   useEffect(() => {
     if (!selected) return;
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -449,7 +461,7 @@ export function Certificates() {
         title="Certificates"
       />
       <div className="certificate-grid">
-        {certificates.map((item, index) => (
+        {items.map((item, index) => (
           <motion.button
             className="certificate"
             key={item.title}
@@ -508,8 +520,10 @@ export function Certificates() {
   );
 }
 // Menampilkan satu entri pendidikan formal dari data portfolio.
-export function Education() {
+export function Education({ initialEducation = education }: { initialEducation?: EducationItem[] }) {
   const reducedMotion = useReducedMotion();
+  const item = initialEducation.length > 0 ? initialEducation[0] : education[0];
+
   return (
     <section className="section wrap education-section">
       <SectionLabel number="07" label="Where it started" title="Education" />
@@ -517,11 +531,11 @@ export function Education() {
         className="education-card"
         {...revealProps(Boolean(reducedMotion))}
       >
-        <span>{education[0].year}</span>
+        <span>{item.year}</span>
         <div>
-          <h3>{education[0].school}</h3>
-          <p className="timeline-company">{education[0].major}</p>
-          <p>{education[0].description}</p>
+          <h3>{item.school}</h3>
+          <p className="timeline-company">{item.major}</p>
+          <p>{item.description}</p>
         </div>
         <Check size={22} />
       </motion.div>
@@ -531,19 +545,60 @@ export function Education() {
 // Menampilkan informasi kontak dan formulir sederhana yang membuka email untuk mengirim pesan.
 export function Contact() {
   const reducedMotion = useReducedMotion();
-  // Mengambil isi formulir lalu mengirimnya melalui email untuk menghubungi pemilik portfolio.
-  function submit(event: FormEvent<HTMLFormElement>) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitState, setSubmitState] = useState<"idle" | "success" | "error">(
+    "idle",
+  );
+  const [submitMessage, setSubmitMessage] = useState("");
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const name = String(formData.get("name") ?? "");
-    const email = String(formData.get("email") ?? "");
-    const message = String(formData.get("message") ?? "");
-    const subject = encodeURIComponent(`Portfolio message from ${name}`);
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\n${message}`,
-    );
-    window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const payload = {
+      name: String(formData.get("name") ?? "").trim(),
+      email: String(formData.get("email") ?? "").trim(),
+      message: String(formData.get("message") ?? "").trim(),
+    };
+
+    if (!payload.name || !payload.email || !payload.message) {
+      setSubmitState("error");
+      setSubmitMessage("Please fill in your name, email, and message.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitState("idle");
+    setSubmitMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data?.error || "Failed to send message.");
+      }
+
+      form.reset();
+      setSubmitState("success");
+      setSubmitMessage("Message sent successfully.");
+    } catch (error) {
+      setSubmitState("error");
+      setSubmitMessage(
+        error instanceof Error ? error.message : "Something went wrong.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
+
   return (
     <section className="section contact-section" id="contact">
       <div className="wrap contact-grid">
@@ -601,9 +656,21 @@ export function Contact() {
               rows={4}
             />
           </label>
-          <button className="button button-lime" type="submit">
-            Send message <Send size={16} />
+          <button className="button button-lime" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Sending..." : "Send message"} <Send size={16} />
           </button>
+          {submitMessage ? (
+            <p
+              aria-live="polite"
+              style={{
+                marginTop: "0.75rem",
+                color: submitState === "success" ? "#22c55e" : "#f87171",
+                fontSize: "0.95rem",
+              }}
+            >
+              {submitMessage}
+            </p>
+          ) : null}
         </motion.form>
       </div>
     </section>

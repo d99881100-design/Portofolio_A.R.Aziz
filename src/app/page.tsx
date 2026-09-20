@@ -13,9 +13,20 @@ import {
   Skills,
   Stats,
 } from "@/components/portfolio-sections";
+import { getAchievements } from "@/lib/achievements";
+import { getCertificates } from "@/lib/certificates";
+import { getEducation } from "@/lib/education";
+import { getExperience } from "@/lib/experience";
+import { getProjects } from "@/lib/projects";
 
 // Menyusun semua section portfolio agar halaman utama terbaca seperti satu landing page yang lengkap.
-export default function Home() {
+export default async function Home() {
+  const initialProjects = await getProjects();
+  const initialExperience = await getExperience();
+  const initialAchievements = await getAchievements();
+  const initialCertificates = await getCertificates();
+  const initialEducation = await getEducation();
+
   return (
     <>
       <Navbar />
@@ -24,11 +35,11 @@ export default function Home() {
         <Stats />
         <About />
         <Skills />
-        <Experience />
-        <Projects />
-        <Achievements />
-        <Certificates />
-        <Education />
+        <Experience initialExperience={initialExperience} />
+        <Projects initialProjects={initialProjects} />
+        <Achievements initialAchievements={initialAchievements} />
+        <Certificates initialCertificates={initialCertificates} />
+        <Education initialEducation={initialEducation} />
         <Contact />
       </main>
       <Footer />

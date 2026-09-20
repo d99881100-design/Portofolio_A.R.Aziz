@@ -3,25 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
-// Data project menjadi sumber parameter route dan isi case study.
-import { projects } from "@/data/portfolio";
-
-const normalizeProjectSlug = (value: string) =>
-  value.trim().toLowerCase().replace(/\s+/g, "-");
-
-// Menghasilkan semua slug project agar halaman detail dapat dibuat secara statis.
-export function generateStaticParams() {
-  return projects.map((project) => ({ slug: normalizeProjectSlug(project.slug) }));
-}
+import { getProjectBySlug } from "@/lib/projects";
 
 // Mengambil project berdasarkan slug lalu menampilkan halaman detailnya.
 export default async function ProjectDetail({
   params,
 }: PageProps<"/projects/[slug]">) {
   const { slug } = await params;
-  const project = projects.find(
-    (item) => normalizeProjectSlug(item.slug) === normalizeProjectSlug(slug),
-  );
+  const project = await getProjectBySlug(slug);
 
   if (!project) {
     notFound();
