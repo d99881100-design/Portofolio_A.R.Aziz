@@ -30,8 +30,13 @@ export default async function ProjectsPage({
 
   return (
     <main className="section wrap projects-section" style={{ paddingTop: "6rem" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "2rem" }}>
-        <p className="eyebrow">Selected work</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "2rem" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
+          <p className="eyebrow" style={{ margin: 0 }}>Selected work</p>
+          <span style={{ fontSize: "0.85rem", opacity: 0.8, fontFamily: "var(--font-mono, monospace)" }}>
+            Total: {projects.length} Proyek
+          </span>
+        </div>
         <h1 style={{ margin: 0, fontSize: "clamp(2rem, 4vw, 3rem)" }}>Project collection</h1>
       </div>
 
@@ -126,9 +131,6 @@ export default async function ProjectsPage({
                   <p className="project-category">{project.category}</p>
                   <h3>{project.title}</h3>
                   <p>{project.description}</p>
-                  <p className="project-detail-line">
-                    A focused build exploring product clarity, useful motion, and a durable visual system.
-                  </p>
                 </div>
                 <div className="project-footer">
                   <div className="tag-row">

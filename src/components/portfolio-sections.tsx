@@ -371,10 +371,6 @@ export function Projects({ initialProjects = projects }: { initialProjects?: Pro
                   <p className="project-category">{project.category}</p>
                   <h3>{project.title}</h3>
                   <p>{project.description}</p>
-                  <p className="project-detail-line">
-                    A focused build exploring product clarity, useful motion, and
-                    a durable visual system.
-                  </p>
                 </div>
                 <div className="project-footer">
                   <div className="tag-row">

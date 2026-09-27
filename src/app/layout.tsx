@@ -1,20 +1,8 @@
 // Tipe metadata digunakan untuk memastikan konfigurasi SEO sesuai API Next.js.
 import type { Metadata } from "next";
-// Font aplikasi dimuat melalui optimasi font bawaan Next.js.
-import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeBootstrap } from "@/components/theme-bootstrap";
 // Style global berlaku untuk seluruh halaman aplikasi.
 import "./globals.css";
-
-// Konfigurasi font sans-serif yang diteruskan sebagai CSS variable.
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 // Metadata dasar untuk judul halaman dan preview saat dibagikan.
 export const metadata: Metadata = {
@@ -28,10 +16,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className="h-full antialiased"
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col"><script dangerouslySetInnerHTML={{ __html: "try { document.documentElement.classList.toggle('dark', localStorage.getItem('theme') === 'dark'); } catch {}" }} />{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ThemeBootstrap />
+        {children}
+      </body>
     </html>
   );
 }
