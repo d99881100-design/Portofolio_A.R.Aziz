@@ -10,7 +10,9 @@ import {
   Check,
   Mail,
   MapPin,
+  Search,
   Send,
+  X,
 } from "lucide-react";
 // Animasi reveal untuk kartu project ketika masuk viewport.
 import { motion, useReducedMotion } from "motion/react";
@@ -110,10 +112,10 @@ export function Hero() {
           <strong>Akhmad Roufun Aziz.</strong>
         </div>
       </div>
-      <div className="scroll-cue">
+      <a href="#about" className="scroll-cue" aria-label="Scroll to explore">
         <span>Scroll to explore</span>
         <ArrowDownRight size={16} />
-      </div>
+      </a>
     </section>
   );
 }
@@ -295,27 +297,38 @@ export function Projects({ initialProjects = projects }: { initialProjects?: Pro
         }}
       >
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
-          <input
-            type="search"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Cari project..."
-            aria-label="Cari project"
-            style={{
-              minWidth: "240px",
-              flex: "1 1 240px",
-              maxWidth: "380px",
-              borderRadius: "999px",
-              border: "1px solid var(--line)",
-              background: "var(--paper)",
-              padding: "0.75rem 1.25rem",
-              color: "var(--ink)",
-              boxShadow: "var(--shadow-subtle)",
-              outline: "none",
-              fontFamily: "var(--font-sans)",
-              fontSize: "0.9rem",
-            }}
-          />
+          <div style={{ position: "relative", minWidth: "240px", flex: "1 1 240px", maxWidth: "380px" }}>
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Cari project..."
+              aria-label="Cari project"
+              style={{
+                width: "100%",
+                borderRadius: "999px",
+                border: "1px solid var(--line)",
+                background: "var(--paper)",
+                padding: "0.75rem 1.25rem 0.75rem 2.75rem",
+                color: "var(--ink)",
+                boxShadow: "var(--shadow-subtle)",
+                outline: "none",
+                fontFamily: "var(--font-sans)",
+                fontSize: "0.9rem",
+              }}
+            />
+            <Search
+              size={16}
+              style={{
+                position: "absolute",
+                left: "1.1rem",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "var(--muted)",
+                pointerEvents: "none",
+              }}
+            />
+          </div>
         </div>
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
@@ -379,7 +392,9 @@ export function Projects({ initialProjects = projects }: { initialProjects?: Pro
               <div className="project-content">
                 <div>
                   <p className="project-category">{project.category}</p>
-                  <h3>{project.title}</h3>
+                  <Link href={`/projects/${project.slug}`} className="project-title-link">
+                    <h3>{project.title}</h3>
+                  </Link>
                   <p>{project.description}</p>
                 </div>
                 <div className="project-footer">
@@ -511,7 +526,7 @@ export function Certificates({ initialCertificates = certificates }: { initialCe
               onClick={() => setSelected(null)}
               aria-label="Close certificate preview"
             >
-              ×
+              <X size={20} strokeWidth={2.5} />
             </button>
             <Image
               src={selected}

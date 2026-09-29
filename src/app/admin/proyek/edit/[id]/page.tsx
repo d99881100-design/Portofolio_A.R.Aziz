@@ -342,16 +342,18 @@ export default async function EditProjectPage({
             <label htmlFor="edit-featured" className="cursor-pointer">Tandai sebagai Proyek Unggulan (Featured)</label>
           </div>
 
-          <div className="md:col-span-2 flex justify-end gap-3 pt-4">
+          <div className="md:col-span-2 flex flex-col-reverse sm:flex-row justify-end gap-3 pt-4">
             <Link
               href="/admin/proyek"
-              className="inline-flex items-center justify-center rounded-full border border-[color:var(--line)] bg-transparent px-5 py-3 text-sm font-medium text-[color:var(--ink)] transition hover:bg-[color:var(--line)]/20"
+              className="button button-light w-full sm:w-auto"
+              style={{ minWidth: "120px", padding: "12px 24px" }}
             >
               Batal
             </Link>
             <button
               type="submit"
-              className="inline-flex items-center justify-center rounded-full border border-[color:var(--ink)] bg-[color:var(--ink)] px-6 py-3 text-sm font-medium text-[color:var(--paper)] transition hover:opacity-95"
+              className="button button-dark w-full sm:w-auto"
+              style={{ minWidth: "180px", padding: "12px 28px" }}
             >
               Simpan Perubahan
             </button>

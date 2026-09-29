@@ -110,19 +110,21 @@ export default async function DeleteProjectPage({
           Tindakan ini permanen dan data proyek akan dihapus dari Supabase.
         </p>
 
-        <div className="mt-6 flex flex-wrap items-center justify-end gap-3">
+        <div className="mt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3">
           <Link
             href="/admin/proyek"
-            className="inline-flex items-center justify-center rounded-full border border-[color:var(--line)] bg-transparent px-5 py-2.5 text-sm font-medium text-[color:var(--ink)] transition hover:bg-[color:var(--line)]/20"
+            className="button button-light w-full sm:w-auto"
+            style={{ minWidth: "120px", padding: "10px 22px" }}
           >
             Batal
           </Link>
 
-          <form action={deleteProjectAction}>
+          <form action={deleteProjectAction} className="w-full sm:w-auto">
             <input type="hidden" name="id" value={project.id} />
             <button
               type="submit"
-              className="inline-flex items-center justify-center rounded-full border border-red-600 bg-red-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-red-700"
+              className="button button-danger w-full sm:w-auto"
+              style={{ minWidth: "160px", padding: "10px 24px" }}
             >
               Ya, Hapus Proyek
             </button>

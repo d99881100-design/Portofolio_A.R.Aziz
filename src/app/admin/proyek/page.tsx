@@ -222,7 +222,7 @@ export default async function AdminProjectsPage({
             <Link
               href="/proyek"
               target="_blank"
-              className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--line)] bg-[color:var(--paper)] px-4 py-2 text-xs font-medium text-[color:var(--ink)] transition hover:border-[color:var(--ink)]"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--line)] bg-[color:var(--paper)] px-4 py-2 text-xs font-medium text-[color:var(--ink)] shadow-subtle transition hover:bg-[color:var(--paper-elevated)] hover:border-[color:var(--ink)] active:scale-[0.98]"
             >
               <span>Lihat Portofolio Publik</span>
               <span>&rarr;</span>
@@ -360,7 +360,8 @@ export default async function AdminProjectsPage({
           <div className="md:col-span-2 flex justify-end">
             <button
               type="submit"
-              className="inline-flex items-center justify-center rounded-full border border-[color:var(--ink)] bg-[color:var(--ink)] px-6 py-3 text-sm font-medium text-[color:var(--paper)] transition hover:opacity-95"
+              className="button button-dark w-full sm:w-auto"
+              style={{ minWidth: "180px", padding: "12px 28px" }}
             >
               Simpan Proyek Baru
             </button>
@@ -422,13 +423,13 @@ export default async function AdminProjectsPage({
                       <div className="flex items-center justify-end gap-2">
                         <Link
                           href={`/admin/proyek/edit/${project.id}`}
-                          className="rounded-full border border-[color:var(--line)] px-3 py-1 text-xs font-medium text-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] transition-colors"
+                          className="inline-flex items-center justify-center min-h-[30px] rounded-full border border-[color:var(--line)] bg-[color:var(--paper)] px-3.5 py-1 text-xs font-semibold text-[color:var(--ink)] shadow-xs hover:border-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] transition-all active:scale-95"
                         >
                           Edit
                         </Link>
                         <Link
                           href={`/admin/proyek/hapus/${project.id}`}
-                          className="rounded-full border border-red-500/40 px-3 py-1 text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-600 hover:text-white transition-colors"
+                          className="inline-flex items-center justify-center min-h-[30px] rounded-full border border-red-500/50 bg-red-500/10 px-3.5 py-1 text-xs font-semibold text-red-600 dark:text-red-400 shadow-xs hover:border-red-600 hover:bg-red-600 hover:text-white transition-all active:scale-95"
                         >
                           Hapus
                         </Link>

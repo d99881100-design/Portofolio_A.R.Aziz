@@ -38,22 +38,22 @@ export default async function AdminLayout({
             </div>
           </div>
 
-          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+          <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/admin/proyek"
-              className="inline-flex items-center justify-center rounded-full border border-[color:var(--ink)] bg-[color:var(--ink)] px-4 py-2 text-sm font-medium text-[color:var(--paper)] transition hover:opacity-95"
+              className="inline-flex items-center justify-center rounded-full border border-[color:var(--ink)] bg-[color:var(--ink)] px-4 py-2 text-sm font-medium text-[color:var(--paper)] transition hover:opacity-95 active:scale-[0.98]"
             >
               Proyek
             </Link>
 
-            <div className="flex items-center gap-3 rounded-full border border-[color:var(--line)] bg-[color:var(--paper)] px-3 py-2 text-sm text-[color:var(--ink)]">
-              <span className="max-w-[180px] truncate" title={user?.email ?? "Admin"}>
+            <div className="flex items-center gap-3 rounded-full border border-[color:var(--line)] bg-[color:var(--paper)] px-3 py-1.5 text-sm text-[color:var(--ink)] shadow-sm">
+              <span className="max-w-[180px] truncate text-xs font-medium text-[color:var(--muted)]" title={user?.email ?? "Admin"}>
                 {user?.email ?? "Admin"}
               </span>
               <form action={logoutAction}>
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center rounded-full border border-[color:var(--line)] bg-transparent px-3 py-1.5 text-xs font-medium text-[color:var(--ink)] transition hover:border-[color:var(--ink)]"
+                  className="inline-flex items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--paper-elevated)] px-3 py-1 text-xs font-semibold text-[color:var(--ink)] transition hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400 active:scale-95 cursor-pointer"
                 >
                   Logout
                 </button>

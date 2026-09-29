@@ -128,7 +128,8 @@ export default async function LoginPage({
 
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center rounded-full border border-[color:var(--ink)] bg-[color:var(--ink)] px-5 py-3 text-sm font-medium text-[color:var(--paper)] transition hover:translate-y-[-1px] hover:opacity-95"
+                className="button button-dark"
+                style={{ width: "100%", padding: "14px 24px", fontSize: "0.95rem" }}
               >
                 Masuk
               </button>

@@ -47,6 +47,7 @@ export function Navbar() {
             href={personalInfo.Download_CV}
             className="nav-cta"
             download="Akhmad-Roufun-Aziz-CV.pdf"
+            onClick={() => setOpen(false)}
           >
             Download CV <ArrowUpRight size={14} />
           </a>

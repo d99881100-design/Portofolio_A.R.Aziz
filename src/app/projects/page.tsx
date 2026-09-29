@@ -160,7 +160,9 @@ export default async function ProjectsPage({
               <div className="project-content">
                 <div>
                   <p className="project-category">{project.category}</p>
-                  <h3>{project.title}</h3>
+                  <Link href={`/projects/${project.slug}`} className="project-title-link">
+                    <h3>{project.title}</h3>
+                  </Link>
                   <p>{project.description}</p>
                 </div>
                 <div className="project-footer">
