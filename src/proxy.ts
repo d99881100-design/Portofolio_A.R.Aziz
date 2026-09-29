@@ -4,8 +4,6 @@ import { NextResponse, type NextRequest } from "next/server";
 // ─── CONST DOORPASS ───────────────────────────────────────────────────────────
 // Kode pintu rahasia diambil dari environment variable server-side.
 // Tidak ada prefix NEXT_PUBLIC_ sehingga TIDAK terekspos ke browser.
-const loginDoorPass = process.env.ADMIN_DOORPASS;
-
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -21,10 +19,18 @@ export async function proxy(request: NextRequest) {
   //   /admin/login?door=<KODE_PINTU>
   // Jika parameter ?door= tidak ada atau salah → 404 (halaman seolah tidak ada)
   if (isLoginPage) {
-    const door = searchParams.get("door") ?? "";
+    const loginDoorPass = process.env.ADMIN_DOORPASS?.trim();
+    const door = (searchParams.get("door") ?? "").trim();
+
+    if (!loginDoorPass) {
+      console.error(
+        "[Proxy Error] ADMIN_DOORPASS environment variable is not set. Check your Vercel project settings.",
+      );
+      return new NextResponse(null, { status: 404 });
+    }
 
     // Verifikasi kecocokan Door Pass (aman terhadap spasi)
-    if (!loginDoorPass || door.trim() !== loginDoorPass) {
+    if (!door || door !== loginDoorPass) {
       return new NextResponse(null, { status: 404 });
     }
   }

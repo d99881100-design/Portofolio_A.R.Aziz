@@ -1,10 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 
-// ─── CONST DOORPASS ───────────────────────────────────────────────────────────
-// Kode pintu diambil dari environment variable server-side.
-// Sama dengan yang digunakan di proxy.ts (middleware).
-const loginDoorPass = process.env.ADMIN_DOORPASS;
+export const dynamic = "force-dynamic";
 
 async function loginAction(formData: FormData) {
   "use server";
@@ -41,9 +38,10 @@ export default async function AdminLoginPage({
   searchParams: Promise<{ door?: string; error?: string | string[] }>;
 }) {
   const { door, error } = await searchParams;
+  const loginDoorPass = process.env.ADMIN_DOORPASS?.trim();
 
   // Verifikasi kecocokan Door Pass (aman terhadap spasi)
-  if (!door || door.trim() !== loginDoorPass) {
+  if (!loginDoorPass || !door || door.trim() !== loginDoorPass) {
     notFound();
   }
 
