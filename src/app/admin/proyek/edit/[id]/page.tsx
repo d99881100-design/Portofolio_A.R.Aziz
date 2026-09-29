@@ -58,7 +58,7 @@ async function updateProjectAction(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   let currentImageUrl: string | null = null;
@@ -179,7 +179,7 @@ export default async function EditProjectPage({
   } = await supabase.auth.getUser();
 
   if (!user || userError) {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   const { data: project, error } = await supabase

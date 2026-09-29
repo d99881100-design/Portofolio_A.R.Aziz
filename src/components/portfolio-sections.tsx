@@ -289,9 +289,9 @@ export function Projects({ initialProjects = projects }: { initialProjects?: Pro
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "1rem",
-          marginTop: "1.25rem",
-          marginBottom: "2rem",
+          gap: "1.25rem",
+          marginTop: "1.5rem",
+          marginBottom: "2.5rem",
         }}
       >
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
@@ -302,14 +302,18 @@ export function Projects({ initialProjects = projects }: { initialProjects?: Pro
             placeholder="Cari project..."
             aria-label="Cari project"
             style={{
-              minWidth: "220px",
-              flex: "1 1 220px",
-              maxWidth: "360px",
+              minWidth: "240px",
+              flex: "1 1 240px",
+              maxWidth: "380px",
               borderRadius: "999px",
-              border: "1px solid rgba(148, 163, 184, 0.6)",
-              background: "rgba(15, 23, 42, 0.02)",
-              padding: "0.8rem 1rem",
-              color: "inherit",
+              border: "1px solid var(--line)",
+              background: "var(--paper)",
+              padding: "0.75rem 1.25rem",
+              color: "var(--ink)",
+              boxShadow: "var(--shadow-subtle)",
+              outline: "none",
+              fontFamily: "var(--font-sans)",
+              fontSize: "0.9rem",
             }}
           />
         </div>
@@ -330,6 +334,10 @@ export function Projects({ initialProjects = projects }: { initialProjects?: Pro
                   alignItems: "center",
                   justifyContent: "center",
                   minWidth: "96px",
+                  padding: "10px 18px",
+                  fontSize: "0.8rem",
+                  fontFamily: "var(--font-mono)",
+                  letterSpacing: "0.04em",
                 }}
               >
                 {label}
@@ -340,7 +348,9 @@ export function Projects({ initialProjects = projects }: { initialProjects?: Pro
       </div>
 
       {filteredProjects.length === 0 ? (
-        <div style={{ paddingBottom: "1.25rem" }}>Tidak ada project yang ditemukan.</div>
+        <div style={{ padding: "2.5rem 0", color: "var(--muted)", fontStyle: "italic" }}>
+          Tidak ada project yang ditemukan.
+        </div>
       ) : (
         <div className="project-grid">
           {filteredProjects.map((project, index) => (

@@ -19,7 +19,7 @@ async function deleteProjectAction(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   // Ambil gambar lama jika ada untuk dibersihkan
@@ -70,7 +70,7 @@ export default async function DeleteProjectPage({
   } = await supabase.auth.getUser();
 
   if (!user || userError) {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   const { data: project, error } = await supabase

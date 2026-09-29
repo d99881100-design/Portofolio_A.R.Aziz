@@ -1,9 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-// ─── CONST DOORPASS ───────────────────────────────────────────────────────────
-// Kode pintu rahasia diambil dari environment variable server-side.
-// Tidak ada prefix NEXT_PUBLIC_ sehingga TIDAK terekspos ke browser.
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -11,27 +8,45 @@ export async function proxy(request: NextRequest) {
 
   const { pathname, searchParams } = request.nextUrl;
 
-  const isLoginPage = pathname === "/admin/login";
-  const isAdminRoute = pathname.startsWith("/admin");
+  const isLoginPage = pathname === "/login" || pathname === "/admin/login";
+  const isAdminRoute = pathname.startsWith("/admin") && pathname !== "/admin/login";
 
-  // ─── LAPISAN 1: PERIKSA DOORPASS (khusus halaman /admin/login) ────────────
-  // Halaman login HANYA dapat diakses melalui URL:
-  //   /admin/login?door=<KODE_PINTU>
-  // Jika parameter ?door= tidak ada atau salah → 404 (halaman seolah tidak ada)
+  const loginDoorPass = process.env.ADMIN_DOORPASS?.trim();
+  const doorParam = (searchParams.get("door") ?? "").trim();
+  const doorCookie = request.cookies.get("admin_door_unlocked")?.value;
+
+  // ─── LAPISAN 1: DOORPASS UNTUK HALAMAN LOGIN (/login) ─────────────────────
   if (isLoginPage) {
-    const loginDoorPass = process.env.ADMIN_DOORPASS?.trim();
-    const door = (searchParams.get("door") ?? "").trim();
+    // Skenario A: User mengakses dengan parameter ?door=KODE_PINTU
+    if (doorParam) {
+      if (loginDoorPass && doorParam === loginDoorPass) {
+        // Doorpass valid! Set cookie dan redirect bersih ke URL /login
+        const redirectUrl = new URL("/login", request.url);
+        const response = NextResponse.redirect(redirectUrl);
+        response.cookies.set("admin_door_unlocked", "1", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+          maxAge: 60 * 60 * 24, // Berlaku 24 jam
+        });
+        return response;
+      } else {
+        // Doorpass salah → 404
+        return new NextResponse(null, { status: 404 });
+      }
+    }
 
-    if (!loginDoorPass) {
-      console.error(
-        "[Proxy Error] ADMIN_DOORPASS environment variable is not set. Check your Vercel project settings.",
-      );
+    // Skenario B: User mengakses /login tanpa parameter ?door
+    // Cek apakah cookie doorpass sudah ada (pernah akses via ?door sebelumnya)
+    const isUnlocked = doorCookie === "1";
+    if (!isUnlocked) {
       return new NextResponse(null, { status: 404 });
     }
 
-    // Verifikasi kecocokan Door Pass (aman terhadap spasi)
-    if (!door || door !== loginDoorPass) {
-      return new NextResponse(null, { status: 404 });
+    // Jika mengakses /admin/login padahal sudah unlock, redirect ke /login
+    if (pathname === "/admin/login") {
+      return NextResponse.redirect(new URL("/login", request.url));
     }
   }
 
@@ -67,13 +82,12 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Halaman admin (bukan login) tanpa sesi aktif → 404
-  // (tidak reveal URL login ke publik)
-  if (isAdminRoute && !isLoginPage && !user) {
+  // Halaman admin tanpa sesi login aktif → 404 (tidak mengekspos rute admin)
+  if (isAdminRoute && !user) {
     return new NextResponse(null, { status: 404 });
   }
 
-  // Sudah login tapi masih di halaman login → redirect ke dashboard
+  // Pengguna sudah login tetapi membuka /login → otomatis redirect ke dashboard
   if (isLoginPage && user) {
     return NextResponse.redirect(new URL("/admin/proyek", request.url));
   }
@@ -82,6 +96,6 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Proteksi berlaku untuk semua rute /admin/* termasuk sub-rute
-  matcher: ["/admin/:path*"],
+  // Proteksi rute admin dan login
+  matcher: ["/admin/:path*", "/login"],
 };

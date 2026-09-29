@@ -62,7 +62,7 @@ async function createProjectAction(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   let uploadedImageUrl: string | null = null;
@@ -180,7 +180,7 @@ export default async function AdminProjectsPage({
   } = await supabase.auth.getUser();
 
   if (!user || userError) {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   const params = await searchParams;
