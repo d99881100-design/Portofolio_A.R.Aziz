@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 
 export interface CertificateItem {
+  id?: number;
   title: string;
   issuer: string;
   year: string;
@@ -19,6 +20,7 @@ type CertificateRow = {
 
 function mapCertificate(row: CertificateRow): CertificateItem {
   return {
+    id: row.id ?? undefined,
     title: row.title ?? "",
     issuer: row.issuer ?? "",
     year: row.year ?? "",

@@ -30,10 +30,10 @@ import {
   stats,
   validProjectCategories,
 } from "@/data/portfolio";
-import type { AchievementItem } from "@/lib/achievements";
-import type { CertificateItem } from "@/lib/certificates";
-import type { EducationItem } from "@/lib/education";
-import type { ExperienceItem } from "@/lib/experience";
+import { getAchievements, type AchievementItem } from "@/lib/achievements";
+import { getCertificates, type CertificateItem } from "@/lib/certificates";
+import { getEducation, type EducationItem } from "@/lib/education";
+import { getExperience, type ExperienceItem } from "@/lib/experience";
 // Hook dan tipe event untuk state interaksi client-side.
 import { FormEvent, useEffect, useState } from "react";
 import { getProjects, type Project } from "@/lib/projects";
@@ -239,16 +239,68 @@ export function Skills() {
 // Menampilkan pengalaman dalam bentuk timeline beserta teknologi tiap peran.
 export function Experience({ initialExperience = experience }: { initialExperience?: ExperienceItem[] }) {
   const reducedMotion = useReducedMotion();
-  const items = initialExperience.length > 0 ? initialExperience : experience;
+  const [experienceList, setExperienceList] = useState<ExperienceItem[]>(
+    initialExperience.length > 0 ? initialExperience : experience
+  );
+
+  useEffect(() => {
+    if (initialExperience && initialExperience.length > 0) {
+      setExperienceList(initialExperience);
+    }
+  }, [initialExperience]);
+
+  useEffect(() => {
+    const fetchLatestExperience = async () => {
+      try {
+        const latest = await getExperience();
+        if (latest && latest.length > 0) {
+          setExperienceList(latest);
+        }
+      } catch (err) {
+        console.error("Gagal memperbarui daftar pengalaman realtime:", err);
+      }
+    };
+
+    const channel = supabase
+      .channel("realtime-experience-channel")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "experience" },
+        () => {
+          fetchLatestExperience();
+        }
+      )
+      .subscribe();
+
+    const handleFocus = () => {
+      fetchLatestExperience();
+    };
+
+    window.addEventListener("focus", handleFocus);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        fetchLatestExperience();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  const items = experienceList.length > 0 ? experienceList : experience;
 
   return (
-    <section className="section wrap experience-section">
+    <section className="section wrap experience-section" id="experience">
       <SectionLabel number="03" label="The path so far" title="Experience" />
       <div className="timeline">
         {items.map((item, index) => (
           <motion.article
             className="timeline-item"
-            key={`${item.year}-${item.role}`}
+            key={item.id ? `exp-${item.id}` : `${item.year}-${item.role}-${index}`}
             {...revealProps(Boolean(reducedMotion), index * 0.1)}
           >
             <div className="timeline-date">{item.year}</div>
@@ -478,10 +530,62 @@ export function Projects({ initialProjects = projects }: { initialProjects?: Pro
 // Menampilkan pencapaian penting sebagai bukti perkembangan selama proses belajar dan berlatih.
 export function Achievements({ initialAchievements = achievements }: { initialAchievements?: AchievementItem[] }) {
   const reducedMotion = useReducedMotion();
-  const items = initialAchievements.length > 0 ? initialAchievements : achievements;
+  const [achievementList, setAchievementList] = useState<AchievementItem[]>(
+    initialAchievements.length > 0 ? initialAchievements : achievements
+  );
+
+  useEffect(() => {
+    if (initialAchievements && initialAchievements.length > 0) {
+      setAchievementList(initialAchievements);
+    }
+  }, [initialAchievements]);
+
+  useEffect(() => {
+    const fetchLatestAchievements = async () => {
+      try {
+        const latest = await getAchievements();
+        if (latest && latest.length > 0) {
+          setAchievementList(latest);
+        }
+      } catch (err) {
+        console.error("Gagal memperbarui daftar prestasi realtime:", err);
+      }
+    };
+
+    const channel = supabase
+      .channel("realtime-achievements-channel")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "achievements" },
+        () => {
+          fetchLatestAchievements();
+        }
+      )
+      .subscribe();
+
+    const handleFocus = () => {
+      fetchLatestAchievements();
+    };
+
+    window.addEventListener("focus", handleFocus);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        fetchLatestAchievements();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  const items = achievementList.length > 0 ? achievementList : achievements;
 
   return (
-    <section className="section dark-section">
+    <section className="section dark-section" id="achievements">
       <div className="wrap">
         <SectionLabel
           number="05"
@@ -493,7 +597,7 @@ export function Achievements({ initialAchievements = achievements }: { initialAc
           {items.map((item, index) => (
             <motion.div
               className="achievement"
-              key={item.title}
+              key={item.id ? `ach-${item.id}` : `${item.title}-${index}`}
               {...revealProps(Boolean(reducedMotion), index * 0.1)}
             >
               <span className="achievement-year">{item.year}</span>
@@ -514,7 +618,59 @@ export function Certificates({ initialCertificates = certificates }: { initialCe
   // Menyimpan sertifikat yang sedang dibuka agar modal dapat menampilkan gambar yang benar.
   const [selected, setSelected] = useState<string | null>(null);
   const reducedMotion = useReducedMotion();
-  const items = initialCertificates.length > 0 ? initialCertificates : certificates;
+  const [certificateList, setCertificateList] = useState<CertificateItem[]>(
+    initialCertificates.length > 0 ? initialCertificates : certificates
+  );
+
+  useEffect(() => {
+    if (initialCertificates && initialCertificates.length > 0) {
+      setCertificateList(initialCertificates);
+    }
+  }, [initialCertificates]);
+
+  useEffect(() => {
+    const fetchLatestCertificates = async () => {
+      try {
+        const latest = await getCertificates();
+        if (latest && latest.length > 0) {
+          setCertificateList(latest);
+        }
+      } catch (err) {
+        console.error("Gagal memperbarui daftar sertifikat realtime:", err);
+      }
+    };
+
+    const channel = supabase
+      .channel("realtime-certificates-channel")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "certificates" },
+        () => {
+          fetchLatestCertificates();
+        }
+      )
+      .subscribe();
+
+    const handleFocus = () => {
+      fetchLatestCertificates();
+    };
+
+    window.addEventListener("focus", handleFocus);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        fetchLatestCertificates();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  const items = certificateList.length > 0 ? certificateList : certificates;
 
   useEffect(() => {
     if (!selected) return;
@@ -528,8 +684,9 @@ export function Certificates({ initialCertificates = certificates }: { initialCe
       document.body.style.overflow = "";
     };
   }, [selected]);
+
   return (
-    <section className="section wrap certificates-section">
+    <section className="section wrap certificates-section" id="certificates">
       <SectionLabel
         number="06"
         label="Proof of practice"
@@ -539,7 +696,7 @@ export function Certificates({ initialCertificates = certificates }: { initialCe
         {items.map((item, index) => (
           <motion.button
             className="certificate"
-            key={item.title}
+            key={item.id ? `cert-${item.id}` : `${item.title}-${index}`}
             onClick={() => setSelected(item.image)}
             aria-label={`Open ${item.title} certificate`}
             {...revealProps(Boolean(reducedMotion), index * 0.1)}
@@ -594,26 +751,83 @@ export function Certificates({ initialCertificates = certificates }: { initialCe
     </section>
   );
 }
-// Menampilkan satu entri pendidikan formal dari data portfolio.
+// Menampilkan entri pendidikan formal dari data portfolio.
 export function Education({ initialEducation = education }: { initialEducation?: EducationItem[] }) {
   const reducedMotion = useReducedMotion();
-  const item = initialEducation.length > 0 ? initialEducation[0] : education[0];
+  const [educationList, setEducationList] = useState<EducationItem[]>(
+    initialEducation.length > 0 ? initialEducation : education
+  );
+
+  useEffect(() => {
+    if (initialEducation && initialEducation.length > 0) {
+      setEducationList(initialEducation);
+    }
+  }, [initialEducation]);
+
+  useEffect(() => {
+    const fetchLatestEducation = async () => {
+      try {
+        const latest = await getEducation();
+        if (latest && latest.length > 0) {
+          setEducationList(latest);
+        }
+      } catch (err) {
+        console.error("Gagal memperbarui daftar pendidikan realtime:", err);
+      }
+    };
+
+    const channel = supabase
+      .channel("realtime-education-channel")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "education" },
+        () => {
+          fetchLatestEducation();
+        }
+      )
+      .subscribe();
+
+    const handleFocus = () => {
+      fetchLatestEducation();
+    };
+
+    window.addEventListener("focus", handleFocus);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        fetchLatestEducation();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  const items = educationList.length > 0 ? educationList : education;
 
   return (
-    <section className="section wrap education-section">
+    <section className="section wrap education-section" id="education">
       <SectionLabel number="07" label="Where it started" title="Education" />
-      <motion.div
-        className="education-card"
-        {...revealProps(Boolean(reducedMotion))}
-      >
-        <span>{item.year}</span>
-        <div>
-          <h3>{item.school}</h3>
-          <p className="timeline-company">{item.major}</p>
-          <p>{item.description}</p>
-        </div>
-        <Check size={22} />
-      </motion.div>
+      <div className="space-y-4" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        {items.map((item, index) => (
+          <motion.div
+            key={item.id ? `edu-${item.id}` : `${item.school}-${index}`}
+            className="education-card"
+            {...revealProps(Boolean(reducedMotion), index * 0.1)}
+          >
+            <span>{item.year}</span>
+            <div>
+              <h3>{item.school}</h3>
+              <p className="timeline-company">{item.major}</p>
+              <p>{item.description}</p>
+            </div>
+            <Check size={22} />
+          </motion.div>
+        ))}
+      </div>
     </section>
   );
 }

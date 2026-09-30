@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 
 export interface AchievementItem {
+  id?: number;
   title: string;
   year: string;
   level: string;
@@ -17,6 +18,7 @@ type AchievementRow = {
 
 function mapAchievement(row: AchievementRow): AchievementItem {
   return {
+    id: row.id ?? undefined,
     title: row.title ?? "",
     year: row.year ?? "",
     level: row.level ?? "",

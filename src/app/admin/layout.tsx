@@ -38,12 +38,36 @@ export default async function AdminLayout({
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <Link
               href="/admin/proyek"
-              className="inline-flex items-center justify-center rounded-full border border-[color:var(--ink)] bg-[color:var(--ink)] px-4 py-2 text-sm font-medium text-[color:var(--paper)] transition hover:opacity-95 active:scale-[0.98]"
+              className="inline-flex items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--paper)] px-3.5 py-1.5 text-xs font-semibold text-[color:var(--ink)] shadow-xs transition hover:border-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] active:scale-[0.98]"
             >
               Proyek
+            </Link>
+            <Link
+              href="/admin/experience"
+              className="inline-flex items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--paper)] px-3.5 py-1.5 text-xs font-semibold text-[color:var(--ink)] shadow-xs transition hover:border-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] active:scale-[0.98]"
+            >
+              Pengalaman
+            </Link>
+            <Link
+              href="/admin/achievements"
+              className="inline-flex items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--paper)] px-3.5 py-1.5 text-xs font-semibold text-[color:var(--ink)] shadow-xs transition hover:border-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] active:scale-[0.98]"
+            >
+              Prestasi
+            </Link>
+            <Link
+              href="/admin/certificates"
+              className="inline-flex items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--paper)] px-3.5 py-1.5 text-xs font-semibold text-[color:var(--ink)] shadow-xs transition hover:border-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] active:scale-[0.98]"
+            >
+              Sertifikat
+            </Link>
+            <Link
+              href="/admin/education"
+              className="inline-flex items-center justify-center rounded-full border border-[color:var(--line)] bg-[color:var(--paper)] px-3.5 py-1.5 text-xs font-semibold text-[color:var(--ink)] shadow-xs transition hover:border-[color:var(--ink)] hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)] active:scale-[0.98]"
+            >
+              Pendidikan
             </Link>
 
             <div className="flex items-center gap-3 rounded-full border border-[color:var(--line)] bg-[color:var(--paper)] px-3 py-1.5 text-sm text-[color:var(--ink)] shadow-sm">

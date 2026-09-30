@@ -1,3 +1,8 @@
+import type { AchievementItem } from "@/lib/achievements";
+import type { CertificateItem } from "@/lib/certificates";
+import type { EducationItem } from "@/lib/education";
+import type { ExperienceItem } from "@/lib/experience";
+
 // Informasi identitas dan ringkasan profesional pemilik portfolio.
 export const personalInfo = {
   name: "Akhmad Roufun Aziz",
@@ -31,7 +36,7 @@ export const skills = [
 ];
 
 // Riwayat pengalaman belajar dan bekerja beserta teknologi yang digunakan.
-export const experience = [
+export const experience: ExperienceItem[] = [
   {
     year: "June 2025",
     role: "Starting My Journey in Software Engineering",
@@ -187,7 +192,7 @@ export function filterProjects(
 }
 
 // Pencapaian yang menjadi bagian dari profil profesional.
-export const achievements = [
+export const achievements: AchievementItem[] = [
   {
     title: "Passed the industry class selection process",
     year: "2025",
@@ -198,7 +203,7 @@ export const achievements = [
 ];
 
 // Sertifikat yang dapat dibuka untuk melihat gambar dalam modal preview.
-export const certificates = [
+export const certificates: CertificateItem[] = [
   {
     title: "Understanding AI",
     issuer: "Senopaty academy - Polri - Kemendikdasmen",
@@ -209,7 +214,7 @@ export const certificates = [
 ];
 
 // Riwayat pendidikan formal pemilik portfolio.
-export const education = [
+export const education: EducationItem[] = [
   {
     year: "2025 — Now",
     school: "SMKN 1 Pasuruan",

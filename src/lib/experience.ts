@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 
 export interface ExperienceItem {
+  id?: number;
   year: string;
   role: string;
   company: string;
@@ -19,6 +20,7 @@ type ExperienceRow = {
 
 function mapExperience(row: ExperienceRow): ExperienceItem {
   return {
+    id: row.id ?? undefined,
     year: row.year ?? "",
     role: row.role ?? "",
     company: row.company ?? "",

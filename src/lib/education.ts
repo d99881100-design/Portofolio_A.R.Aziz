@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 
 export interface EducationItem {
+  id?: number;
   year: string;
   school: string;
   major: string;
@@ -17,6 +18,7 @@ type EducationRow = {
 
 function mapEducation(row: EducationRow): EducationItem {
   return {
+    id: row.id ?? undefined,
     year: row.year ?? "",
     school: row.school ?? "",
     major: row.major ?? "",
