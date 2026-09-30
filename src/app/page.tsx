@@ -19,6 +19,9 @@ import { getEducation } from "@/lib/education";
 import { getExperience } from "@/lib/experience";
 import { getProjects } from "@/lib/projects";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 // Menyusun semua section portfolio agar halaman utama terbaca seperti satu landing page yang lengkap.
 export default async function Home() {
   const initialProjects = await getProjects();

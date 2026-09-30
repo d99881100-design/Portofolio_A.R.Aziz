@@ -5,6 +5,9 @@ import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 import { getProjectBySlug } from "@/lib/projects";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 // Mengambil project berdasarkan slug lalu menampilkan halaman detailnya.
 export default async function ProjectDetail({
   params,

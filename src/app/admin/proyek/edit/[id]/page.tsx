@@ -4,6 +4,9 @@ import { redirect } from "next/navigation";
 import { deleteProjectImage, uploadProjectImage } from "@/lib/images";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 function getTrimmedString(value: FormDataEntryValue | null | undefined, defaultValue = ""): string {
   const text = String(value ?? "").trim();
   return text || defaultValue;
@@ -144,6 +147,7 @@ async function updateProjectAction(formData: FormData) {
       }
     }
 
+    revalidatePath("/", "layout");
     revalidatePath("/admin/proyek");
     revalidatePath("/projects");
     revalidatePath("/proyek");

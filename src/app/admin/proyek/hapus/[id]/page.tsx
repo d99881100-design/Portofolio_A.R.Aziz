@@ -4,6 +4,9 @@ import { redirect } from "next/navigation";
 import { deleteProjectImage } from "@/lib/images";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 async function deleteProjectAction(formData: FormData) {
   "use server";
 
@@ -44,6 +47,7 @@ async function deleteProjectAction(formData: FormData) {
     }
   }
 
+  revalidatePath("/", "layout");
   revalidatePath("/admin/proyek");
   revalidatePath("/projects");
   revalidatePath("/proyek");

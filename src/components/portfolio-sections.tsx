@@ -36,7 +36,8 @@ import type { EducationItem } from "@/lib/education";
 import type { ExperienceItem } from "@/lib/experience";
 // Hook dan tipe event untuk state interaksi client-side.
 import { FormEvent, useEffect, useState } from "react";
-import type { Project } from "@/lib/projects";
+import { getProjects, type Project } from "@/lib/projects";
+import { supabase } from "@/lib/supabase";
 
 // Path gambar profil yang digunakan pada bagian hero.
 const heroImageUrl = "/images/profil_keren.jpeg";
@@ -272,8 +273,61 @@ export function Projects({ initialProjects = projects }: { initialProjects?: Pro
   const reducedMotion = useReducedMotion();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
+  const [projectList, setProjectList] = useState<Project[]>(
+    initialProjects.length > 0 ? initialProjects : projects
+  );
 
-  const activeProjects = initialProjects.length > 0 ? initialProjects : projects;
+  // Sinkronisasi data saat server revalidasi atau props berubah
+  useEffect(() => {
+    if (initialProjects && initialProjects.length > 0) {
+      setProjectList(initialProjects);
+    }
+  }, [initialProjects]);
+
+  // Sinkronisasi realtime langsung dari Supabase tanpa perlu refresh manual
+  useEffect(() => {
+    const fetchLatestProjects = async () => {
+      try {
+        const latest = await getProjects();
+        if (latest && latest.length > 0) {
+          setProjectList(latest);
+        }
+      } catch (err) {
+        console.error("Gagal memperbarui daftar proyek realtime:", err);
+      }
+    };
+
+    const channel = supabase
+      .channel("realtime-projects-channel")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "projects" },
+        () => {
+          fetchLatestProjects();
+        }
+      )
+      .subscribe();
+
+    const handleFocus = () => {
+      fetchLatestProjects();
+    };
+
+    window.addEventListener("focus", handleFocus);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        fetchLatestProjects();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  const activeProjects = projectList.length > 0 ? projectList : projects;
   const filteredProjects = filterProjects(activeProjects, {
     q: search,
     category,
