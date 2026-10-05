@@ -1,4 +1,5 @@
 // Komponen gambar dan link untuk halaman detail project.
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -7,6 +8,26 @@ import { getProjectBySlug } from "@/lib/projects";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/projects/[slug]">): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getProjectBySlug(slug);
+
+  if (!project) {
+    return { title: "Proyek Tidak Ditemukan" };
+  }
+
+  return {
+    title: project.title,
+    description: project.description,
+    openGraph: {
+      title: project.title,
+      description: project.description,
+    },
+  };
+}
 
 // Mengambil project berdasarkan slug lalu menampilkan halaman detailnya.
 export default async function ProjectDetail({

@@ -27,12 +27,18 @@ const serifFont = Newsreader({
 
 // Metadata dasar untuk judul halaman dan preview saat dibagikan.
 export const metadata: Metadata = {
-  title: "Akhmad Roufun Aziz | Software Developer",
+  metadataBase: new URL("https://portofolio-a-r-aziz.vercel.app"),
+  title: {
+    default: "Akhmad Roufun Aziz - Website Profil & Portfolio",
+    template: "%s | Akhmad Roufun Aziz",
+  },
   description:
-    "Portfolio of Akhmad Roufun Aziz, an AI engineer and software developer from Pasuruan.",
+    "Portofolio siswa SMK Rekayasa Perangkat Lunak, dibangun dengan Next.js dan Supabase.",
   openGraph: {
-    title: "Akhmad Roufun Aziz | Software Developer",
-    description: "Digital products, thoughtful interfaces, and useful code.",
+    title: "Akhmad Roufun Aziz - Website Profil & Portfolio",
+    description:
+      "Portofolio siswa SMK Rekayasa Perangkat Lunak, dibangun dengan Next.js dan Supabase.",
+    type: "website",
   },
 };
 
