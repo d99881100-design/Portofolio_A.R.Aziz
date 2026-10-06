@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getProjects } from '@/lib/projects';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const BASE_URL = 'https://portofolio-a-r-aziz.vercel.app';
+  const BASE_URL = 'https://www.a-roufun-aziz.my.id';
   
   // Mengambil data proyek dari Supabase melalui fungsi getProjects
   const daftarProyek = await getProjects();

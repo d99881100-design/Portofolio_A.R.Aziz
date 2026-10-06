@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "portofolio-a-r-aziz.vercel.app",
+        hostname: "www.a-roufun-aziz.my.id",
         pathname: "/**",
       },
       {

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/admin/',
     },
-    sitemap: 'https://portofolio-a-r-aziz.vercel.app/sitemap.xml',
+    sitemap: 'https://www.a-roufun-aziz.my.id/sitemap.xml',
   };
 }

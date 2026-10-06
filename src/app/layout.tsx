@@ -27,7 +27,7 @@ const serifFont = Newsreader({
 
 // Metadata dasar untuk judul halaman dan preview saat dibagikan.
 export const metadata: Metadata = {
-  metadataBase: new URL("https://portofolio-a-r-aziz.vercel.app"),
+  metadataBase: new URL("https://www.a-roufun-aziz.my.id"),
   title: {
     default: "Akhmad Roufun Aziz - Website Profil & Portfolio",
     template: "%s | Akhmad Roufun Aziz",

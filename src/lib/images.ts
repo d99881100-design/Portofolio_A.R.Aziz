@@ -1,6 +1,6 @@
 export const ALLOWED_IMAGE_HOSTNAMES = new Set([
   "thumb.wikimedia.org",
-  "portofolio-a-r-aziz.vercel.app",
+  "www.a-roufun-aziz.my.id",
   "img.antarafoto.com",
   "images.unsplash.com",
   "images.pexels.com",

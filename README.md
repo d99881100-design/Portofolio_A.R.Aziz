@@ -3,7 +3,7 @@
 Proyek ini adalah hasil dari rangkaian pembelajaran Kelas Industri "Next.js Dasar sampai Mahir" (Pertemuan 1 - 5). Website ini dibangun menggunakan Next.js (App Router), TypeScript, Tailwind CSS, dan Supabase.
 
 ## 🔗 Link Production
-**[Lihat Website Live (Vercel)](https://portofolio-a-r-aziz.vercel.app/)**
+**[Lihat Website Live (Vercel)](https://www.a-roufun-aziz.my.id/)**
 
 ## 🚀 Daftar Fitur (Pertemuan 1 - 5)
 1. **Pertemuan 1:** Pengenalan Dasar Next.js (App Router, Routing, Navigasi Link).
