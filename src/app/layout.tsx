@@ -39,6 +39,14 @@ export const metadata: Metadata = {
     title: "Akhmad Roufun Aziz - Website Profil & Portfolio",
     description:
       "Portofolio siswa SMK Rekayasa Perangkat Lunak, dibangun dengan Next.js dan Supabase.",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Portofolio Akhmad Roufun Aziz",
+      }
+    ],
     type: "website",
   },
 };
