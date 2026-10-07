@@ -41,6 +41,7 @@ import { supabase } from "@/lib/supabase";
 
 // Path gambar profil yang digunakan pada bagian hero.
 const heroImageUrl = "/images/profil_keren.jpeg";
+const heroHoverImageUrl = "/images/profil_pramuka.jpeg";
 // Mengatur konfigurasi animasi saat elemen masuk ke layar agar transisi terlihat mulus.
 const revealViewport = { once: true, amount: 0.18 };
 // Menyediakan pengaturan animasi yang sama untuk berbagai section agar tampilan terasa konsisten.
@@ -89,12 +90,21 @@ export function Hero() {
       </div>
       <div className="hero-visual reveal delay-2">
         <div className="portrait-frame">
-          <div className="portrait-art">
+          <div className="portrait-art group">
             <Image
               src={heroImageUrl}
               alt="Profile portrait"
               fill
               priority
+              className="object-cover object-top transition-opacity duration-500 group-hover:opacity-0"
+              sizes="(max-width: 700px) 80vw, 390px"
+            />
+            <Image
+              src={heroHoverImageUrl}
+              alt="Profile portrait hover"
+              fill
+              priority
+              className="object-cover object-top absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
               sizes="(max-width: 700px) 80vw, 390px"
             />
             <span className="portrait-caption">Akhmad Roufun Aziz</span>
