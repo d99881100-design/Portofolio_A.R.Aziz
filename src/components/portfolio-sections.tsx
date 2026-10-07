@@ -67,7 +67,7 @@ export function Hero() {
           work
         </p>
         <h1 className="hero-title reveal delay-1">
-          Making AI engineer
+          Making Prompt engineer
           <br />
           <em>valuable</em> for the web..
         </h1>

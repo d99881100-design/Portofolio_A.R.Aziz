@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   description:
     "Portofolio siswa SMK Rekayasa Perangkat Lunak, dibangun dengan Next.js dan Supabase.",
-  keywords: ["Portofolio aziz", "Akhmad Roufun Aziz", "Siswa RPL", "AI Engineer", "SMKN 1 Pasuruan", "Aziz", "Pasuruan", "Portfolio Website"],
+  keywords: ["Portofolio aziz", "Akhmad Roufun Aziz", "Siswa RPL", "Prompt Engineer", "SMKN 1 Pasuruan", "Aziz", "Pasuruan", "Portfolio Website"],
   openGraph: {
     title: "Akhmad Roufun Aziz - Website Profil & Portfolio",
     description:

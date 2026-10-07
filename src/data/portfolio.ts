@@ -6,7 +6,7 @@ import type { ExperienceItem } from "@/lib/experience";
 // Informasi identitas dan ringkasan profesional pemilik portfolio.
 export const personalInfo = {
   name: "Akhmad Roufun Aziz",
-  role: "AI Engineer",
+  role: "Prompt Engineer",
   location: "Pasuruan, Indonesia",
   availability: "Available for select projects",
   email: "akhmadroufun@gmail.com",
